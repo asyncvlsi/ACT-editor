@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?> <?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            id="acteditor.editors.ACTEditor"
+            name="ACT Editor"
+            icon="icons/act_small.png"
+            extensions="act"
+            class="acteditor.editors.ACTEditor"
+            contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor">
+      </editor>
+   </extension>
+</plugin>
