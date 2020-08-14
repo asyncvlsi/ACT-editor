@@ -1,0 +1,99 @@
+package acteditor.editors;
+
+import org.eclipse.ui.editors.text.TextEditor;
+import org.eclipse.ui.texteditor.AbstractDecoratedTextEditorPreferenceConstants;
+
+import java.util.List;
+import java.util.HashMap;
+import org.eclipse.jface.text.ITextViewerExtension;
+import org.eclipse.jface.text.source.*;
+import org.eclipse.jface.text.source.projection.*;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.jface.text.Position;
+
+public class ACTEditor extends TextEditor {
+	private ACTColors colors;
+	private Annotation[] oldAnnotations;
+	private ProjectionAnnotationModel annotationModel;
+	private ACTVerifyKeyListener bracketListener;
+
+	public ACTEditor() {
+		super();
+		colors = new ACTColors();
+		setSourceViewerConfiguration(new ACTSourceViewerConfiguration(colors, this));
+		setDocumentProvider(new ACTDocumentProvider());
+	}
+
+	@Override
+	public void dispose() {
+		colors.dispose();
+		super.dispose();
+	}
+
+	@Override
+	public void createPartControl(Composite parent) {
+		super.createPartControl(parent);
+
+		// setting up the projection viewer
+		ProjectionViewer viewer = (ProjectionViewer) getSourceViewer();
+
+		ProjectionSupport projectionSupport = new ProjectionSupport(viewer, getAnnotationAccess(), getSharedColors());
+		projectionSupport.install();
+
+		// turn projection mode on
+		viewer.doOperation(ProjectionViewer.TOGGLE);
+
+		annotationModel = viewer.getProjectionAnnotationModel();
+
+	}
+
+	@Override
+	protected ISourceViewer createSourceViewer(Composite parent, IVerticalRuler ruler, int styles) {
+		// get the source viewer to return a projection viewer instead
+		ISourceViewer viewer = new ProjectionViewer(parent, ruler, getOverviewRuler(), isOverviewRulerVisible(),
+				styles);
+
+		bracketListener = new ACTVerifyKeyListener();
+
+		if (viewer instanceof ITextViewerExtension) {
+			((ITextViewerExtension) viewer).appendVerifyKeyListener(bracketListener);
+		}
+
+		// ensure decoration support has been created and configured.
+		getSourceViewerDecorationSupport(viewer);
+
+		return viewer;
+
+	}
+
+	public void updateFoldingStructure(List<Position> positions) {
+
+		Annotation[] annotations = new Annotation[positions.size()];
+
+		// this will hold the new annotations along
+		// with their corresponding positions
+
+		HashMap<ProjectionAnnotation, Position> newAnnotations = new HashMap<ProjectionAnnotation, Position>();
+
+		for (int i = 0; i < positions.size(); i++) {
+
+			ProjectionAnnotation annotation = new ProjectionAnnotation();
+
+			newAnnotations.put(annotation, positions.get(i));
+
+			annotations[i] = annotation;
+
+		}
+
+		annotationModel.modifyAnnotations(oldAnnotations, newAnnotations, null);
+
+		oldAnnotations = annotations;
+	}
+	
+	@Override
+	public void setFocus() {
+	     getPreferenceStore().setValue(AbstractDecoratedTextEditorPreferenceConstants.EDITOR_LINE_NUMBER_RULER, true);
+	     getPreferenceStore().setValue(AbstractDecoratedTextEditorPreferenceConstants.EDITOR_PRINT_MARGIN_COLUMN, 80);
+	    super.setFocus();
+	}
+}
