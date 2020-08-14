@@ -10,11 +10,8 @@ Install the Eclipse IDE from their [website](https://www.eclipse.org/downloads/)
 brew cask install eclipse-jee
 ```
 
-Download the plugin
-    
-```bash
-git clone https://git.yale.edu/avlsi/ACT-Editor.git/
-```
+Download the installer.zip file and unzip it
+
 # Using the Plugin
 
 - Open Eclipse
@@ -23,7 +20,12 @@ git clone https://git.yale.edu/avlsi/ACT-Editor.git/
 
 - Click the `Add` button
 
-- In the `Add Repository` dialog that appears, click the `Local` button next to the `Location` field
+- In the `Add Repository` dialog that appears, click the `Archive` button next to the `Location` field
 
-- Select the ACT-Up
+- Add the actUpdateSite folder in the installer/actUpdateSite.
+
+- Check the `Uncategorized` box and click next 
+
+- Restart eclipse to use the plugin  
+
 
