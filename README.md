@@ -28,4 +28,7 @@ Download the installer.zip file and unzip it
 
 - Restart eclipse to use the plugin  
 
+# Feedback
+
+Please [let me know](mailto:mawuli.akpalu@yale.edu) if you have any suggestions.
 
