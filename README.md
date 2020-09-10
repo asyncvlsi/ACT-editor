@@ -20,7 +20,7 @@ Download the installer.zip file and unzip it
 
 - Click the `Add` button
 
-- In the `Add Repository` dialog that appears, click the `Archive` button next to the `Location` field
+- In the `Add Repository` dialog that appears, click the `Local` button next to the `Location` field
 
 - Add the actUpdateSite folder in the installer/actUpdateSite.
 
