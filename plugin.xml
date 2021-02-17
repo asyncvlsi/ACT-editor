@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?> <?eclipse version="3.4"?>
 <plugin>
+	<extension 
+   		point="org.eclipse.core.contenttype.contentTypes">
+   		<file-association
+   			content-type="org.eclipse.core.runtime.text"
+   			name="ACT Source File" 
+   			id="acteditor.editors.ACTEditor.contentType"
+   			priority="high"
+   			file-extensions="act"/>
+   </extension>
    <extension
          point="org.eclipse.ui.editors">
       <editor
@@ -9,6 +18,54 @@
             extensions="act"
             class="acteditor.editors.ACTEditor"
             contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor">
+           <contentTypeBinding
+         		contentTypeId="acteditor.editors.ACTEditor.contentType">
+      		</contentTypeBinding>
       </editor>
    </extension>
+   <extension
+   		point="org.eclipse.ui.bindings">
+   		<key sequence="M1+M2+F"
+   			commandId="acteditor.editors.ACTFormattingHandler"
+   			schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+   			contextId="org.eclipse.ui.contexts.window"/>
+   	</extension>
+   	<extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="menu:org.eclipse.ui.main.menu">
+         <menu
+               id="format"
+               label="Format">
+            <command
+                  commandId="acteditor.editors.ACTFormattingHandler"
+                  label="Indent"
+                  tooltip="AutoIndent the whole document">
+            </command>
+         </menu>
+      </menuContribution>
+   </extension>
+    <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="menu:org.eclipse.ui.main.menu">
+         <menu
+               id="actRun"
+               label="ACT Run">
+            <command
+                  commandId="acteditor.editors.ACTFormattingHandler"
+                  label="Indent"
+                  tooltip="AutoIndent the whole document">
+            </command>
+         </menu>
+      </menuContribution>
+   </extension>
+	<extension 
+	   		point="org.eclipse.core.runtime.adapters">
+	   		<factory
+	   			adaptableType="acteditor.editors.ACTEditor"
+	   			class="acteditor.editors.ACTOutlineAdapterFactory"> 
+	   			<adapter type="org.eclipse.ui.views.contentoutline.IContentOutlinePage"/>
+	   		</factory>
+	   </extension>      
 </plugin>

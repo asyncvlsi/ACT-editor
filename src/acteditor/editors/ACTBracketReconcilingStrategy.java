@@ -7,6 +7,7 @@ package acteditor.editors;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
@@ -16,17 +17,14 @@ import org.eclipse.jface.text.reconciler.DirtyRegion;
 import org.eclipse.jface.text.reconciler.IReconcilingStrategy;
 import org.eclipse.jface.text.reconciler.IReconcilingStrategyExtension;
 import org.eclipse.swt.widgets.Display;
- 
 
 public class ACTBracketReconcilingStrategy implements IReconcilingStrategy, IReconcilingStrategyExtension {
 
 	private ACTEditor editor;
 	private IDocument fDocument;
-
 	protected int fOffset = 0;
 	protected int fRangeEnd = 0;
-
-	protected  List<Position> fPositions = new ArrayList<>();
+	protected List<Position> fPositions = new ArrayList<>();
 
 	@Override
 	public void setDocument(IDocument document) {
@@ -42,22 +40,21 @@ public class ACTBracketReconcilingStrategy implements IReconcilingStrategy, IRec
 	}
 
 	public void reconcile(IRegion partition) {
-		//begin(partition.getOffset(), partition.getLength());
+		begin(partition.getOffset(), partition.getLength());
 	}
 
 	@Override
 	public void setProgressMonitor(IProgressMonitor monitor) {
 		// none in use now
 	}
-	
+
 //	public void setSourceViewer(ISourceViewer viewer) {
 //		this.viewer = viewer;
 //	}
-	
+
 	@Override
 	public void initialReconcile() {
 		reconcile(new DirtyRegion(0, fDocument.getLength(), DirtyRegion.INSERT, fDocument.get()), null);
-		
 	}
 
 	protected void begin(int offset, int length) {
@@ -68,21 +65,110 @@ public class ACTBracketReconcilingStrategy implements IReconcilingStrategy, IRec
 		} catch (BadLocationException e) {
 			e.printStackTrace();
 		}
-		
 
 		Display.getDefault().asyncExec(new Runnable() {
 			public void run() {
 				editor.updateFoldingStructure(fPositions);
+				editor.pos = fPositions;
 			}
 
 		});
 	}
 
+	private boolean hasImport(String text) {
+
+		text = text.strip();
+		
+	
+		int delim = text.indexOf(' ');
+		String first = text.substring(0, delim);
+		
+		if (delim > 0 &&  first.contains("import")){
+			return true;
+		}
+
+		return false;
+	}
+
 	public void calculateBracketPositions(int offset, int length) throws BadLocationException {
+
+		int start=1, end=1; /* start and end of imports to be folded */
+
+		/* Check for import statements. will always be at the top */
+
+		int line; /* the current line */
+		int total_lines = fDocument.getNumberOfLines();
+		boolean inside_comment = false;
+
+		for (line = 0; line < total_lines; line++) {
+
+			
+			int line_offset = fDocument.getLineOffset(line);
+			int line_length = fDocument.getLineLength(line);
+			
+			String text = fDocument.get(line_offset, line_offset + line_length).strip();
+			
+			
+			if(inside_comment) {
+				if(text.contains("*/"))
+					inside_comment= false;
+				continue;
+			}
+			
+			/* Comments at the start of document? */
+			if(text.length() > 2 && text.charAt(0) == '/') {
+				
+				if(text.charAt(1) == '/') { 		/* single line comment */
+					continue;
+				}
+				
+				else if(text.charAt(1) == '*'){		/* multi-line comment */
+					inside_comment = true;
+				}
+
+			}
+
+
+			/* empty lines? */
+			else if(text == "\n"){
+				continue;
+			}
+	
+			/* import statement here ? */
+			else if (hasImport(text) == true) {
+				start = line;
+
+				while (line < total_lines && hasImport(text)) {
+					line_offset = fDocument.getLineOffset(line);
+					line_length = fDocument.getLineLength(line);
+					
+					text = fDocument.get(line_offset, line_offset + line_length);
+					line++;
+				}
+				
+				
+
+				end = line--;
+				
+				
+				int start_offset = fDocument.getLineOffset(start);
+				int end_offset = fDocument.getLineOffset(end);
+				emitPosition(start_offset, end_offset - start_offset);
+				break;
+			}
+			
+			/* Actual code starts here, or maybe a comment was encountered 
+			 * Might not behave appropriately if comments and imports are intermixed
+			 * */
+			else {
+				break;
+			}
+
+		}
 
 		// we're using one based indexing
 
-		int currentLine = 1;
+		int currentLine = 1; // start checking from where the imports end, if any 
 		int currentColumn = 1; // the column of the current line
 
 		String content = fDocument.get(); // gets the whole document as a single string;
