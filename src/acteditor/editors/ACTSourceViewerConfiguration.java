@@ -1,17 +1,23 @@
 package acteditor.editors;
 
 import org.eclipse.jface.text.IDocument;
+//import org.eclipse.jdt.internal.ui.text.java.JavaFormattingStrategy;
 import org.eclipse.jface.text.TextAttribute;
+//import org.eclipse.jface.text.formatter.IContentFormatter;
+//import org.eclipse.jface.text.formatter.MultiPassContentFormatter;
 import org.eclipse.jface.text.presentation.IPresentationReconciler;
 import org.eclipse.jface.text.presentation.PresentationReconciler;
-//import org.eclipse.jface.text.reconciler.IReconciler;
+import org.eclipse.jface.text.DefaultIndentLineAutoEditStrategy;
+import org.eclipse.jface.text.IAutoEditStrategy;
 import org.eclipse.jface.text.rules.BufferedRuleBasedScanner;
 import org.eclipse.jface.text.rules.DefaultDamagerRepairer;
 import org.eclipse.jface.text.rules.Token;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.SourceViewerConfiguration;
+//import org.eclipse.jface.text.source.projection.ProjectionViewer;
 import org.eclipse.jface.text.reconciler.MonoReconciler;
 import org.eclipse.jface.text.reconciler.IReconciler;
+
 
 public class ACTSourceViewerConfiguration extends SourceViewerConfiguration {
 	/**
@@ -81,10 +87,32 @@ public class ACTSourceViewerConfiguration extends SourceViewerConfiguration {
 		ACTBracketReconcilingStrategy strategy = new ACTBracketReconcilingStrategy();
 		strategy.setEditor(editor);
 		
+		//ACTContentOutlinePage 
 		MonoReconciler reconciler = new MonoReconciler(strategy, false);
 		
 		return reconciler;
 	}
 	
+
+	
+	@Override
+	public IAutoEditStrategy[] getAutoEditStrategies(ISourceViewer sourceViewer, String contentType) {
+		IAutoEditStrategy strategy = (IDocument.DEFAULT_CONTENT_TYPE.equals(contentType) ? new ACTAutoIndentationStrategy() : new DefaultIndentLineAutoEditStrategy());
+		//IAutoEditStrategy strategy = new ACTAutoIndentationStrategy();
+		return new IAutoEditStrategy[] { strategy };
+	}
+	
+	
+//	@Override
+//	public int getTabWidth(ISourceViewer sourceViewer) {
+//		return 4;
+//	}
+	
+//	@Override
+//	public IContentFormatter getContentFormatter(ISourceViewer sourceViewer) {
+//	  final MultiPassContentFormatter formatter= new MultiPassContentFormatter(getConfiguredDocumentPartitioning(sourceViewer), IDocument.DEFAULT_CONTENT_TYPE);
+//	  formatter.setMasterStrategy(new JavaFormattingStrategy());
+//	  return formatter;
+//	}
 	
 }
