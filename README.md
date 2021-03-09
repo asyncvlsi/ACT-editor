@@ -24,6 +24,15 @@ brew install --cask eclipse-jee
 /Applications/Eclipse\ JEE.app/Contents/MacOS/eclipse -clean
 ```
 
+After the plugin is installed, Eclipse might still open ACT files with a generic text editor. To correct this,
+
+* Right-click on the file in the Project Explorer.
+ 
+* Go to **Open With > Other**
+
+* Select the ACT Editor and check the **Use it for all \*.act files** option. 
+
+
                                                                                    
 # Feedback                                                                         
                                                                                    
