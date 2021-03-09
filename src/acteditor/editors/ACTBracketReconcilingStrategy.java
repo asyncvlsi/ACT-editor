@@ -79,6 +79,7 @@ public class ACTBracketReconcilingStrategy implements IReconcilingStrategy, IRec
 
 		text = text.strip();
 		
+		//System.out.println(text);
 	
 		int delim = text.indexOf(' ');
 		String first = text.substring(0, delim);
