@@ -41,7 +41,7 @@ public class ACTContentOutlinePage extends ContentOutlinePage {
 	/**
 	 * A segment element.
 	 */
-	protected static class Segment {
+	protected static class Segment{
 		public String name;
 		public Position position;
 		private Position scope = new Position(0);
