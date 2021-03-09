@@ -1,17 +1,15 @@
 # ACT Editor                                                                       
                                                                                    
-This is a code editor for the ACT language created using eclipse plugin tools   
-                                                                                   
+This is a code editor for the ACT language created using eclipse plugin development kit. The plugin requires
+that Java 11 be installed. 
+
 # Installation                                                                     
                                                                                    
-Install the latest version of Java and [Eclipse IDE](https://www.eclipse.org/downloads/). You can also 
-install eclipse with [homebrew](https://brew.sh/)                         
+Install the [Eclipse IDE](https://www.eclipse.org/downloads/). Eclipse may alse be installed with  [homebrew](https://brew.sh/)                         
                                                                                    
 ```bash                                                                            
 brew install --cask eclipse-jee                                                    
 ```                                                                                
-                                                                                   
-Download and unzip the installer.zip file.                                       
                                                                                    
 # Using the Plugin                                                                 
 
