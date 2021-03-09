@@ -30,21 +30,6 @@
    			schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
    			contextId="org.eclipse.ui.contexts.window"/>
    	</extension>
-   	<extension
-         point="org.eclipse.ui.menus">
-      <menuContribution
-            locationURI="menu:org.eclipse.ui.main.menu">
-         <menu
-               id="format"
-               label="Format">
-            <command
-                  commandId="acteditor.editors.ACTFormattingHandler"
-                  label="Indent"
-                  tooltip="AutoIndent the whole document">
-            </command>
-         </menu>
-      </menuContribution>
-   </extension>
     <extension
          point="org.eclipse.ui.menus">
       <menuContribution
@@ -54,12 +39,20 @@
                label="ACT Run">
             <command
                   commandId="acteditor.editors.ACTFormattingHandler"
-                  label="Indent"
+                  label="Build"
                   tooltip="AutoIndent the whole document">
             </command>
          </menu>
       </menuContribution>
    </extension>
+   <extension point="org.eclipse.debug.core.launchConfigurationTypes">
+	    <launchConfigurationType
+	        name="ACT Launcher"
+	        delegate="acteditor.editors.ACTLaunchConfigurationDelegate"
+	        modes="run, debug"               
+	        id="acteditor.editors.actEditor">        
+	    </launchConfigurationType>
+	</extension>
 	<extension 
 	   		point="org.eclipse.core.runtime.adapters">
 	   		<factory
