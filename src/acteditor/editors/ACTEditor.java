@@ -6,13 +6,13 @@ import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
 import java.util.List;
 
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
+//import javax.swing.event.DocumentEvent;
+//import javax.swing.event.DocumentListener;
 
 import java.util.HashMap;
 
-import org.eclipse.jface.text.IDocument;
-import org.eclipse.jface.text.IDocumentListener;
+//import org.eclipse.jface.text.IDocument;
+//import org.eclipse.jface.text.IDocumentListener;
 import org.eclipse.jface.text.ITextViewerExtension;
 import org.eclipse.jface.text.source.*;
 import org.eclipse.jface.text.source.projection.*;
