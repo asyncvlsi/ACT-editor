@@ -1,7 +1,7 @@
 # ACT Editor                                                                       
                                                                                    
 This is a code editor for the ACT language created using eclipse plugin development kit. The plugin requires
-a minimum version of Java 11. 
+at least Java 11. 
 
 # Installation                                                                     
                                                                                    
