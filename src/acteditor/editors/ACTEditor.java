@@ -47,6 +47,7 @@ public class ACTEditor extends TextEditor {
 	public IContentOutlinePage getContentOutlinePage() {
 		return fOutlinePage;
 	}
+	
 	@Override
 	public void dispose() {
 		colors.dispose();

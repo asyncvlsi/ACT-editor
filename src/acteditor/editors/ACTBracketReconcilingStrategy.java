@@ -2,6 +2,8 @@
 //https://www.eclipse.org/articles/Article-Folding-in-Eclipse-Text-Editors/folding.html
 //as well as code in org.eclipse.ui.genericEditor.IndentFoldingStrategy
 
+
+// This is a code folding strategy based on the 
 package acteditor.editors;
 
 
@@ -26,20 +28,31 @@ public class ACTBracketReconcilingStrategy implements IReconcilingStrategy, IRec
 	protected int fRangeEnd = 0;
 	protected List<Position> fPositions = new ArrayList<>();
 
+	/**
+	 * The current document 
+	 * @param document: The current document
+	 */
 	@Override
 	public void setDocument(IDocument document) {
 		this.fDocument = document;
 	}
-
+	
+	/**
+	 * The current editor instance
+	 * @param editor the ACT editor instance 
+	 */
 	public void setEditor(ACTEditor editor) {
 		this.editor = editor;
 	}
 
+	
 	public void reconcile(DirtyRegion dirtyRegion, IRegion subRegion) {
+		fPositions.clear();
 		begin(dirtyRegion.getOffset(), dirtyRegion.getLength());
 	}
 
 	public void reconcile(IRegion partition) {
+		fPositions.clear();
 		begin(partition.getOffset(), partition.getLength());
 	}
 
@@ -57,6 +70,16 @@ public class ACTBracketReconcilingStrategy implements IReconcilingStrategy, IRec
 		reconcile(new DirtyRegion(0, fDocument.getLength(), DirtyRegion.INSERT, fDocument.get()), null);
 	}
 
+	/** 
+	 * This function initiates calls to recalculate the folding regions.
+	 * it clears the map holding  
+	 * 
+	 * @param offset 	Offset from the beginning of the file
+	 *  				from which to begin calculations.
+	 *  
+	 * @param length	length from offset of text to consider
+	 */
+	
 	protected void begin(int offset, int length) {
 		fPositions.clear();
 
@@ -71,15 +94,20 @@ public class ACTBracketReconcilingStrategy implements IReconcilingStrategy, IRec
 				editor.updateFoldingStructure(fPositions);
 				editor.pos = fPositions;
 			}
-
 		});
 	}
 
+	
+	/**
+	 * This function checks if the current line is an import statement
+	 * 
+	 * @param text the text in the current line
+	 * @return
+	 */
 	private boolean hasImport(String text) {
 
 		text = text.strip();
 		
-		//System.out.println(text);
 	
 		int delim = text.indexOf(' ');
 		String first = text.substring(0, delim);
@@ -213,7 +241,15 @@ public class ACTBracketReconcilingStrategy implements IReconcilingStrategy, IRec
 
 	}
 
-	// moves until it reaches the end of a multi-line comment
+	/**
+	 * Gets the position of a closing bracket, if any 
+	 * @param line
+	 * @param column
+	 * @param charPosition
+	 * @param content
+	 * @return
+	 * @throws BadLocationException
+	 */
 	private int getClosingBracket(int line, int column, int charPosition, String content) throws BadLocationException {
 		int startLine = line;
 		int closingBracketOffset = 0;

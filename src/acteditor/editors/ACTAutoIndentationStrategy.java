@@ -59,18 +59,18 @@ public class ACTAutoIndentationStrategy extends DefaultIndentLineAutoEditStrateg
 			throws BadLocationException {
 
 		int start = document.getLineOffset(line);
-		int brackcount = getBracketCount(document, start, end, false) - closingBracketIncrease;
+		int bracketCount = getBracketCount(document, start, end, false) - closingBracketIncrease;
 
 		// sum up the brackets counts of each line (closing brackets count negative,
 		// opening positive) until we find a line the brings the count to zero
-		while (brackcount < 0) {
+		while (bracketCount < 0) {
 			line--;
 			if (line < 0) {
 				return -1;
 			}
 			start = document.getLineOffset(line);
 			end = start + document.getLineLength(line) - 1;
-			brackcount += getBracketCount(document, start, end, false);
+			bracketCount += getBracketCount(document, start, end, false);
 		}
 		return line;
 	}
@@ -264,17 +264,17 @@ public class ACTAutoIndentationStrategy extends DefaultIndentLineAutoEditStrateg
 			int p = (command.offset == document.getLength() ? command.offset - 1 : command.offset);
 			int line = document.getLineOfOffset(p);
 			int start = document.getLineOffset(line);
-			int whiteend = findEndOfWhiteSpace(document, start, command.offset);
+			int whiteEnd = findEndOfWhiteSpace(document, start, command.offset);
 
 			// shift only when line does not contain any text up to the closing bracket
-			if (whiteend == command.offset) {
+			if (whiteEnd == command.offset) {
 				// evaluate the line with the opening bracket that matches out closing bracket
 				int indLine = findMatchingOpenBracket(document, line, command.offset, 1);
 				if (indLine != -1 && indLine != line) {
 					// take the indent of the found line
 					StringBuilder replaceText = new StringBuilder(getIndentOfLine(document, indLine));
 					// add the rest of the current line including the just added close bracket
-					replaceText.append(document.get(whiteend, command.offset - whiteend));
+					replaceText.append(document.get(whiteEnd, command.offset - whiteEnd));
 					replaceText.append(command.text);
 					// modify document command
 					command.length = command.offset - start;
