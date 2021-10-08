@@ -3,10 +3,14 @@ package acteditor.editors;
 import org.eclipse.jface.text.IDocument;
 //import org.eclipse.jdt.internal.ui.text.java.JavaFormattingStrategy;
 import org.eclipse.jface.text.TextAttribute;
+import org.eclipse.jface.text.formatter.IContentFormatter;
+import org.eclipse.jface.text.formatter.MultiPassContentFormatter;
 //import org.eclipse.jface.text.formatter.IContentFormatter;
 //import org.eclipse.jface.text.formatter.MultiPassContentFormatter;
 import org.eclipse.jface.text.presentation.IPresentationReconciler;
 import org.eclipse.jface.text.presentation.PresentationReconciler;
+import org.eclipse.jdt.internal.ui.text.java.JavaFormattingStrategy;
+import org.eclipse.jface.text.DefaultAutoIndentStrategy;
 import org.eclipse.jface.text.DefaultIndentLineAutoEditStrategy;
 import org.eclipse.jface.text.IAutoEditStrategy;
 import org.eclipse.jface.text.rules.BufferedRuleBasedScanner;
@@ -98,21 +102,20 @@ public class ACTSourceViewerConfiguration extends SourceViewerConfiguration {
 	@Override
 	public IAutoEditStrategy[] getAutoEditStrategies(ISourceViewer sourceViewer, String contentType) {
 		IAutoEditStrategy strategy = (IDocument.DEFAULT_CONTENT_TYPE.equals(contentType) ? new ACTAutoIndentationStrategy() : new DefaultIndentLineAutoEditStrategy());
-		//IAutoEditStrategy strategy = new ACTAutoIndentationStrategy();
 		return new IAutoEditStrategy[] { strategy };
 	}
 	
 	
-//	@Override
-//	public int getTabWidth(ISourceViewer sourceViewer) {
-//		return 4;
-//	}
+	@Override
+	public int getTabWidth(ISourceViewer sourceViewer) {
+		return 4;
+	}
 	
 //	@Override
 //	public IContentFormatter getContentFormatter(ISourceViewer sourceViewer) {
 //	  final MultiPassContentFormatter formatter= new MultiPassContentFormatter(getConfiguredDocumentPartitioning(sourceViewer), IDocument.DEFAULT_CONTENT_TYPE);
-//	  formatter.setMasterStrategy(new JavaFormattingStrategy());
+//	  formatter.setMasterStrategy(new DefaultIndentLineAutoEditStrategy());
 //	  return formatter;
 //	}
-	
+
 }

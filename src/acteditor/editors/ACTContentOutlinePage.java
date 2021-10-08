@@ -34,12 +34,14 @@ import org.eclipse.ui.texteditor.ITextEditor;
 
 /**
  * A content outline page which always represents the content of the connected
- * editor in 10 segments.
+ * editor.
  */
 public class ACTContentOutlinePage extends ContentOutlinePage {
 
 	/**
 	 * A segment element.
+	 * A segment may be a namespace or any structure that may have others 
+	 * nested within it. Any nested segments are stored as children. 
 	 */
 	protected static class Segment {
 		public String name;
@@ -97,6 +99,7 @@ public class ACTContentOutlinePage extends ContentOutlinePage {
 
 
 		private Position getScope(IDocument document, int offset) throws BadLocationException {
+			
 			String content = document.get();
 			int line_start = document.getLineOfOffset(offset);
 			int curr_line = line_start;
@@ -128,12 +131,14 @@ public class ACTContentOutlinePage extends ContentOutlinePage {
 							i++;
 						}
 					}
+					
 				} else if (content.charAt(i) == '{') { // opening brace
 					braceCount++;
 
 					if (start < 0) {
 						start = i;
 					}
+					
 				} else if (content.charAt(i) == '}') {
 					braceCount--;
 
@@ -151,9 +156,17 @@ public class ACTContentOutlinePage extends ContentOutlinePage {
 			return new Position(0);
 		}
 
+		/**
+		 * Parses the entire document and builds the tree 
+		 * of segment objects.
+		 * 
+		 * @param document The current document
+		 */
 		protected void parse(IDocument document) {
 
 			int lines = document.getNumberOfLines();
+			
+			// The parent segment
 			fContent = new Segment("Main File", new Position(0, document.getLength()));
 
 			for (int line = 0; line < lines; line++) {
