@@ -1,34 +1,40 @@
-# ACT Editor
+# ACT Editor                                                                       
+                                                                                   
+This is a code editor for the ACT language created using eclipse plugin development kit. The plugin requires
+at least Java 11. 
 
-This is a code editor for the ACT language created using eclipse plugin tools
+# Installation                                                                     
+                                                                                   
+Install the [Eclipse IDE](https://www.eclipse.org/downloads/). Eclipse may alse be installed with  [homebrew](https://brew.sh/)                         
+                                                                                   
+```bash                                                                            
+brew install --cask eclipse-jee                                                    
+```                                                                                
+                                                                                   
+# Using the Plugin                                                                 
 
-# Installation 
 
-Install the Eclipse IDE from their [website](https://www.eclipse.org/downloads/) or with [homebrew](https://brew.sh/)
+* Download the ACTEditor JAR file.
+
+* Locate the Eclipse plugins folder. For Mac users it may be in `/Applications/Eclipse\ JEE.app/Contents/Eclipse/plugins`
+
+* Place the JAR file in the eclipse plugins folder and run eclipse with the `-clean` flag. 
 
 ```bash
-brew cask install eclipse-jee
+/Applications/Eclipse\ JEE.app/Contents/MacOS/eclipse -clean
 ```
 
-Download the installer.zip file and unzip it
+After the plugin is installed, Eclipse might still open ACT files with a generic text editor. To correct this,
 
-# Using the Plugin
+* Right-click on the file in the Project Explorer.
+ 
+* Go to **Open With > Other**
 
-- Open Eclipse
+* Select the ACT Editor and check the **Use it for all \*.act files** option. 
 
-- From the menu choose: `Help / Install New Software...`
 
-- Click the `Add` button
-
-- In the `Add Repository` dialog that appears, click the `Local` button next to the `Location` field
-
-- Add the actUpdateSite folder in the installer/actUpdateSite.
-
-- Check the `Uncategorized` box and click next 
-
-- Restart eclipse to use the plugin  
-
-# Feedback
-
+                                                                                   
+# Feedback                                                                         
+                                                                                   
 Please [let me know](mailto:mawuli.akpalu@yale.edu) if you have any suggestions.
-
+                                                                                   

@@ -43,7 +43,7 @@ public class ACTContentOutlinePage extends ContentOutlinePage {
 	 * A segment may be a namespace or any structure that may have others 
 	 * nested within it. Any nested segments are stored as children. 
 	 */
-	protected static class Segment {
+	protected static class Segment{
 		public String name;
 		public Position position;
 		private Position scope = new Position(0);
